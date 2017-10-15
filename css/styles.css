@@ -62,12 +62,12 @@ p {
 }
 
 div {
-	margin: 60px 0;
+	margin: 40px 0;
 }
 
 footer {
 	text-transform: uppercase;
-	padding: 0 20px;
+	padding: 5px 20px;
 	background-color: #0D2C40;
 	color: white;
 	font-size: 14px;
