@@ -52,48 +52,53 @@ var clearBoard = function () {
 	};
 };
 
-var score = 0;
-var rounds = 0;
+// Display, update, and reset the score and rounds played.
+var score = {
+	score: 0,
+	rounds: 0,
+	// Display the score
+	display: function() {
+		var scoreBoard = document.getElementById("score-board");
+		scoreBoard.textContent = score.score + " / " + score.rounds;
+	},
+	// If cards match, add 1 to both `score` and `rounds`. Otherwise, just add 1 to `rounds`.
+	update: function(cardsMatch) {
+		if (cardsMatch === true) {
+			score.rounds += 1;
+			score.score += 1;
+		} else {
+			score.rounds += 1;
+		};
+	},
+	// Reset score and rounds
+	reset: function() {
+		score.rounds = 0;
+		score.score = 0;
+	}
+}
 
 // Reset the score and start a new game.
 var resetGame = function() {
 	console.clear();
 	console.log("Game has been reset");
-	score = 0;
-	rounds = 0;
-	displayScore();
+	score.reset();
+	score.display();
 	cardsInPlay = [];
 	clearBoard();
 	returnCardsToDeck();
 	startGame();
 };
 
-// Track and update the score and rounds played.
-var trackScore = function(cardsMatch) {
-	if (cardsMatch === true) {
-		score += 1;
-		rounds += 1;
-	} else {
-		rounds += 1;
-	};
-};
-
-// Display the score
-var displayScore = function() {
-	var scoreBoard = document.getElementById("score-board");
-	scoreBoard.textContent = score + " / " + rounds;
-};
-
 // Check if the two flipped cards match each other. Provide feedback to the user letting them know if the two cards match, or if they should try again.
 var checkForMatch = function() {
 	if (cardsInPlay.length === 2) {
 		if (cardsInPlay[0].rank === cardsInPlay[1].rank) {
-			trackScore(true);
-			displayScore();
+			score.update(true);
+			score.display();
 			alert("You found a match!");
 		} else {
-			trackScore(false);
-			displayScore();
+			score.update(false);
+			score.display();
 			alert("Sorry, try again!");
 		};
 		cardsInPlay = [];
@@ -152,7 +157,6 @@ var startGame = function() {
 	console.log("Cards in deck: ");
 	console.log(deck);
 	shuffleCards();
-	console.log
 	console.log("Cards dealt: ");
 	console.log(dealtCards);
 	populateBoard();
