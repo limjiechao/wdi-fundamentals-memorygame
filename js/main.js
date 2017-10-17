@@ -44,18 +44,6 @@ var shuffleCards = function() {
 // Holds all the cards that the user has flipped over.
 var cardsInPlay = [];
 
-// Reset the score and start a new game.
-var resetGame = function() {
-	console.clear();
-	console.log("Game has been reset");
-	score = 0;
-	displayScore();
-	cardsInPlay = [];
-	clearBoard();
-	returnCardsToDeck();
-	startGame();
-};
-
 // Clear all four cards dealt out in the prior round from the parent node.
 var clearBoard = function () {
 	var oldBoard = document.getElementById("game-board");
@@ -65,21 +53,47 @@ var clearBoard = function () {
 };
 
 var score = 0;
+var rounds = 0;
+
+// Reset the score and start a new game.
+var resetGame = function() {
+	console.clear();
+	console.log("Game has been reset");
+	score = 0;
+	rounds = 0;
+	displayScore();
+	cardsInPlay = [];
+	clearBoard();
+	returnCardsToDeck();
+	startGame();
+};
+
+// Track and update the score and rounds played.
+var trackScore = function(cardsMatch) {
+	if (cardsMatch === true) {
+		score += 1;
+		rounds += 1;
+	} else {
+		rounds += 1;
+	};
+};
 
 // Display the score
 var displayScore = function() {
 	var scoreBoard = document.getElementById("score-board");
-	scoreBoard.textContent = score;
+	scoreBoard.textContent = score + " / " + rounds;
 };
 
 // Check if the two flipped cards match each other. Provide feedback to the user letting them know if the two cards match, or if they should try again.
 var checkForMatch = function() {
 	if (cardsInPlay.length === 2) {
 		if (cardsInPlay[0].rank === cardsInPlay[1].rank) {
-			alert("You found a match!");
-			score += 1;
+			trackScore(true);
 			displayScore();
+			alert("You found a match!");
 		} else {
+			trackScore(false);
+			displayScore();
 			alert("Sorry, try again!");
 		};
 		cardsInPlay = [];
